@@ -70,8 +70,6 @@ class Seen
   end
 end
 
-puts @server
-
 bot = Cinch::Bot.new do
   configure do |c|
     config = YAML.load_file("config.yml")
