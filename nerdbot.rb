@@ -5,6 +5,7 @@ require 'yaml'
 require_relative 'plugins/moin'
 require_relative 'plugins/seen'
 require_relative 'plugins/yourls'
+require_relative 'plugins/channel_record'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -15,12 +16,20 @@ bot = Cinch::Bot.new do
     c.nick     = @nick
     c.password = @password
     c.channels = ["#nerderrhein"]
-    c.plugins.plugins = [Cinch::Yourls, Cinch::Moin, Cinch::Seen]
+    c.plugins.plugins = [Cinch::Yourls, Cinch::Moin, Cinch::Seen, Cinch::ChannelRecord]
 
     c.plugins.options[Cinch::Yourls] = {
      :yourlsserver => @yourlsserver,
      :yourlssig => @yourlssig
    }
+
+    c.plugins.options[Cinch::ChannelRecord] = {
+     :file => @record_file
+   }
+  end
+
+  trap "SIGINT" do
+    bot.quit
   end
 end
 
