@@ -34,6 +34,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class Cinch::Seen
+  require 'daybreak'
   include Cinch::Plugin
 
   SeenInfo = Struct.new(:time, :nick, :message)
@@ -43,20 +44,19 @@ class Cinch::Seen
   listen_to :channel, :method => :on_channel
 
   def on_connect(*)
-    @filepath = config[:file] || raise("Missing required argument: :file")
-    @file = File.open(@filepath, "a+")
-    @file.seek(0, File::SEEK_END) # Work around Ruby bug https://bugs.ruby-lang.org/issues/10039
-    @filemutex = Mutex.new
+    @db = Daybreak::DB.new config[:file] || raise("Missing required argument: :file")
 
-    at_exit{@file.close}
+    at_exit{@db.close}
   end
 
   def on_channel(msg)
     return if msg.message.start_with?("\u0001") # ACTION
 
-    @filemutex.synchronize do
-      @file.puts("#{msg.time.to_i}\0#{msg.user.nick}\0#{msg.message.strip}")
+    @db.synchronize do
+      @db[msg.user.nick] = "#{msg.time.to_i}\0#{msg.message.strip}"
     end
+    @db.compact
+    @db.flush
   end
 
   def execute(msg, nick)
@@ -80,17 +80,13 @@ class Cinch::Seen
   private
 
   def find_last_message(nick)
-    @filemutex.synchronize do
-      @file.rewind
-      @file.lines.reverse_each do |line|
+    @db.load
+    @db.synchronize do
+      line = @db[nick]
+      if line
         parts = line.split("\0")
-
-        if parts[1] == nick
-          return SeenInfo.new(Time.at(parts[0].to_i), parts[1], parts[2])
-        end
+        return SeenInfo.new(Time.at(parts[0].to_i), nick, parts[1])
       end
-
-      @file.seek(0, File::SEEK_END)
     end
 
     nil
