@@ -5,3 +5,4 @@ config:
   nick: nerdbot
   password: nick_password
   record_file: /var/cache/record.dat
+  seen_file: /var/cache/seenlog.dat
