@@ -65,7 +65,7 @@ class Cinch::Seen
       return
     end
 
-    if nick == m.user.nick
+    if nick == msg.user.nick
       m.reply "That's you!"
       return
     end
