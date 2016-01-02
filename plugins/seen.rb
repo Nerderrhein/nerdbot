@@ -66,7 +66,7 @@ class Cinch::Seen
     end
 
     if nick == msg.user.nick
-      m.reply "That's you!"
+      msg.reply "That's you!"
       return
     end
 
