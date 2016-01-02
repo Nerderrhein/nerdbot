@@ -26,7 +26,7 @@ bot = Cinch::Bot.new do
     c.plugins.options[Cinch::ChannelRecord] = {
      :file => @record_file
    }
-   config.plugins.options[Cinch::Seen] = {
+   c.plugins.options[Cinch::Seen] = {
      :file => @seen_file
    }
   end
