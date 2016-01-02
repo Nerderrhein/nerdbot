@@ -65,6 +65,11 @@ class Cinch::Seen
       return
     end
 
+    if nick == m.user.nick
+      m.reply "That's you!"
+      return
+    end
+
     if info = find_last_message(nick)
       msg.reply("I have last seen #{nick} on #{info.time} saying: #{info.message}")
     else
