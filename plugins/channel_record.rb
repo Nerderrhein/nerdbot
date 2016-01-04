@@ -50,6 +50,11 @@ class Cinch::ChannelRecord
   listen_to :connect, :method => :on_connect
   listen_to :join,    :method => :on_join
 
+  set :help, <<-EOF
+!record
+  Response with the last count and time the channel nick record was broken.
+   EOF
+
   def on_connect(*)
     @filepath = config[:file] || raise("Missing required argument: :file")
     @filemutex = Mutex.new

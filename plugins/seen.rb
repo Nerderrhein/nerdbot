@@ -43,6 +43,11 @@ class Cinch::Seen
   listen_to :connect, :method => :on_connect
   listen_to :channel, :method => :on_channel
 
+  set :help, <<-EOF
+!seen nick
+  Response with the last time and messsage the nick send in the channel.
+   EOF
+
   def on_connect(*)
     @db = Daybreak::DB.new config[:file] || raise("Missing required argument: :file")
 

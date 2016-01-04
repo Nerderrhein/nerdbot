@@ -4,8 +4,8 @@ class Cinch::Yourls
   listen_to :channel
 
   set :help, <<-EOF
-[...]
-  Automaticly shortens all links(http/https) that are posted in the channel.
+http[s]://...
+  Automaticly shortens all links with a custom yourls installation that are posted in the channel.
    EOF
 
   def shorten(url)
