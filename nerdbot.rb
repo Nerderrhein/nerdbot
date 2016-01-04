@@ -6,6 +6,7 @@ require_relative 'plugins/moin'
 require_relative 'plugins/seen'
 require_relative 'plugins/yourls'
 require_relative 'plugins/channel_record'
+require_relative 'plugins/help'
 
 bot = Cinch::Bot.new do
   configure do |c|
@@ -16,7 +17,7 @@ bot = Cinch::Bot.new do
     c.nick     = @nick
     c.password = @password
     c.channels = ["#nerderrhein"]
-    c.plugins.plugins = [Cinch::Yourls, Cinch::Moin, Cinch::Seen, Cinch::ChannelRecord]
+    c.plugins.plugins = [Cinch::Yourls, Cinch::Moin, Cinch::Seen, Cinch::ChannelRecord, Cinch::Help]
 
     c.plugins.options[Cinch::Yourls] = {
      :yourlsserver => @yourlsserver,
@@ -28,6 +29,9 @@ bot = Cinch::Bot.new do
    }
    c.plugins.options[Cinch::Seen] = {
      :file => @seen_file
+   }
+   c.plugins.options[Cinch::Help] = {
+     :intro => "%s at your service."
    }
   end
 
