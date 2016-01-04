@@ -3,6 +3,11 @@ class Cinch::Yourls
   include Cinch::Plugin
   listen_to :channel
 
+  set :help, <<-EOF
+[...]
+  Automaticly shortens all links(http/https) that are posted in the channel.
+   EOF
+
   def shorten(url)
     url = open("http://#{config[:yourlsserver]}/yourls-api.php?signature=#{config[:yourlssig]}&action=shorturl&format=json&url=#{URI.escape(url)}").read
     url == "Error" ? nil : url
