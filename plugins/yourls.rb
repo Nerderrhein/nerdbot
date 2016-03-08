@@ -9,7 +9,7 @@ http[s]://...
    EOF
 
   def shorten(url)
-    url = open("http://#{config[:yourlsserver]}/yourls-api.php?signature=#{config[:yourlssig]}&action=shorturl&format=json&url=#{URI.escape(url)}").read
+    url = open("#{config[:yourlsserver]}/yourls-api.php?signature=#{config[:yourlssig]}&action=shorturl&format=json&url=#{URI.escape(url)}").read
     url == "Error" ? nil : url
     url_hash = JSON.parse(url)
     url_hash["shorturl"] + " : " + url_hash["title"]

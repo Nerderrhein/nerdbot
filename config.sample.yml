@@ -1,5 +1,5 @@
 config:
-  yourlsserver: nerderrhe.in
+  yourlsserver: http://nerderrhe.in
   yourlssig: secret_key
   server: irc.freenode.org
   nick: nerdbot
